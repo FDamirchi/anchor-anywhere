@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "Anchor Anywhere",
+    "version": "0.1.0",
+    "description": "Select text, create anchors, and jump back instantly - on any website.",
+    "permissions": [],
+    "host_permissions": ["<all_urls>"],
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content.js"],
+            "css": ["style.css"],
+            "run_at": "document_idle"
+        }
+    ]
+}
