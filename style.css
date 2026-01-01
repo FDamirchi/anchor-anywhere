@@ -1,46 +1,76 @@
-#anchor-panel {
+#aa-panel,
+#aa-panel * {
+    box-sizing: border-box;
+}
+
+#aa-panel {
     position: fixed;
-    top: 16px;
-    right: 16px;
-    z-index: 2147483647;
-    background: rgba(17, 17, 17, 0.92);
-    color: white;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2147483647; /* Prevent page horizontal scrolling on narrow viewports */
+    width: min(340px, calc(100vw - 24px));
+    max-height: 52vh;
+    overflow: auto;
+    overflow-x: hidden;
+    background: rgba(17, 17, 17, 0.94);
+    color: #fff;
+    border-radius: 14px;
     padding: 10px;
-    border-radius: 12px;
-    max-width: 280px;
     font: 12px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     backdrop-filter: blur(6px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    display: none;
 }
 
-#anchor-panel .title {
-    font-weight: 700;
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#anchor-panel button {
-    display: block;
-    width: 100%;
-    margin: 6px 0;
-    padding: 7px 8px;
+#aa-panel button {
+    appearance: none;
+    -webkit-appearance: none;
     border: 0;
     border-radius: 10px;
+    padding: 6px 8px;
     cursor: pointer;
+    max-width: 100%;
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
 }
 
-#anchor-panel .row {
+#aa-panel button:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+#aa-panel .hdr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+#aa-panel .hdr .title {
+    font-weight: 700;
+}
+
+#aa-panel .hdr .btns {
     display: flex;
     gap: 6px;
 }
 
-#anchor-panel .row button {
-    width: auto;
-    flex: 1;
+#aa-panel .list .row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin: 6px 0;
 }
 
-#anchor-panel .hint {
-    opacity: 0.8;
-    margin-top: 6px;
+#aa-panel .list .row button.jump {
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#aa-panel .hint {
+    opacity: 0.75;
+    margin-top: 8px;
 }

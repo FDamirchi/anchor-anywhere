@@ -2,15 +2,24 @@
     "manifest_version": 3,
     "name": "Anchor Anywhere",
     "version": "0.1.0",
-    "description": "Select text, create anchors, and jump back instantly - on any website.",
-    "permissions": [],
-    "host_permissions": ["<all_urls>"],
+    "description": "Pin selections via right-click and jump back later.",
+    "permissions": ["contextMenus", "storage"],
+    "host_permissions": ["http://*/*", "https://*/*"],
+    "background": { "service_worker": "background.js" },
+    "action": { "default_title": "Toggle Pins" },
+    "commands": {
+        "toggle_panel": {
+            "suggested_key": { "default": "Alt+Shift+P" },
+            "description": "Toggle pins panel"
+        }
+    },
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
+            "matches": ["http://*/*", "https://*/*"],
             "js": ["content.js"],
             "css": ["style.css"],
-            "run_at": "document_idle"
+            "run_at": "document_idle",
+            "all_frames": true
         }
     ]
 }
