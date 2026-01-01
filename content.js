@@ -1,4 +1,4 @@
-// Anchor Anywhere (v0.9)
+// Anchor Anywhere (v0.1)
 // Fixes:
 // - Lightweight selection caching (no expensive container scanning on selectionchange)
 // - Capture selection on right-click (mousedown button=2) + contextmenu
@@ -226,7 +226,7 @@ function ensurePanel() {
       </div>
     </div>
     <div class="list" id="aa-list"></div>
-    <div class="hint">Right-click selection → Pin selection • Shortcut: Alt+Shift+P</div>
+    <div class="hint">Right-click selection → Pin selection • Shortcut: Alt+A</div>
   `;
     document.body.appendChild(panel);
 

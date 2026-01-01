@@ -9,7 +9,7 @@
     "action": { "default_title": "Toggle Pins" },
     "commands": {
         "toggle_panel": {
-            "suggested_key": { "default": "Alt+Shift+P" },
+            "suggested_key": { "default": "Alt+A" },
             "description": "Toggle pins panel"
         }
     },
