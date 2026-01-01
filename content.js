@@ -11,6 +11,15 @@ const PANEL_ID = "aa-panel";
 let lastSelection = null;
 let lastSelectionAt = 0;
 const SELECTION_TTL_MS = 8000;
+const MAX_PIN_AGE_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+function pruneOldPins(pins) {
+    const now = Date.now();
+    return pins.filter((p) => {
+        if (!p.createdAt) return true; // safety for old pins
+        return now - p.createdAt <= MAX_PIN_AGE_MS;
+    });
+}
 
 function isTopFrame() {
     return window.top === window;
@@ -27,13 +36,25 @@ function topPageKey() {
 async function getPins() {
     const key = topPageKey();
     const obj = await chrome.storage.local.get(key);
-    return obj[key] || [];
+    const pins = obj[key] || [];
+
+    const pruned = pruneOldPins(pins);
+
+    // Save only if something was removed
+    if (pruned.length !== pins.length) {
+        await chrome.storage.local.set({ [key]: pruned });
+    }
+
+    return pruned;
 }
+
 
 async function setPins(pins) {
     const key = topPageKey();
-    await chrome.storage.local.set({ [key]: pins });
+    const pruned = pruneOldPins(pins);
+    await chrome.storage.local.set({ [key]: pruned });
 }
+
 
 function overflowY(el) {
     try {

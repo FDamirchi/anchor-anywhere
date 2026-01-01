@@ -17,7 +17,6 @@ chrome.runtime.onInstalled.addListener(() => {
 
 function sendToTab(tabId, message) {
     chrome.tabs.sendMessage(tabId, message, () => {
-        // Ignore "Receiving end does not exist" on unsupported pages.
         if (chrome.runtime.lastError) return;
     });
 }
