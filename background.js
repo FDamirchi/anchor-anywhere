@@ -45,7 +45,6 @@ chrome.commands.onCommand.addListener((command) => {
     });
 });
 
-// Relay messages from any frame back into the tab (SPA-friendly).
 chrome.runtime.onMessage.addListener((msg, sender) => {
     const tabId = sender?.tab?.id;
     if (!tabId || !msg?.type) return;

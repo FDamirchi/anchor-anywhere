@@ -1,13 +1,7 @@
 // Anchor Anywhere (v0.1)
-// Fixes:
-// - Lightweight selection caching (no expensive container scanning on selectionchange)
-// - Capture selection on right-click (mousedown button=2) + contextmenu
-// - Container detection: ancestor-only (fast). Window fallback covers Wikipedia.
-// - Smooth scrolling where possible.
 
 const PANEL_ID = "aa-panel";
 
-// Cached selection snapshot (short TTL)
 let lastSelection = null;
 let lastSelectionAt = 0;
 const SELECTION_TTL_MS = 8000;
@@ -16,7 +10,7 @@ const MAX_PIN_AGE_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 function pruneOldPins(pins) {
     const now = Date.now();
     return pins.filter((p) => {
-        if (!p.createdAt) return true; // safety for old pins
+        if (!p.createdAt) return true;
         return now - p.createdAt <= MAX_PIN_AGE_MS;
     });
 }
@@ -40,7 +34,6 @@ async function getPins() {
 
     const pruned = pruneOldPins(pins);
 
-    // Save only if something was removed
     if (pruned.length !== pins.length) {
         await chrome.storage.local.set({ [key]: pruned });
     }
@@ -152,7 +145,6 @@ function findByHint(hint) {
     return candidates[0] || null;
 }
 
-// FAST: only walk ancestors; no global scanning (keeps Wikipedia/GitHub happy)
 function findScrollContainerFromNode(node) {
     let el = node?.nodeType === 1 ? node : node?.parentElement;
 
@@ -164,7 +156,7 @@ function findScrollContainerFromNode(node) {
     const main = document.querySelector("main");
     if (main && isScrollable(main)) return main;
 
-    return null; // window scroll
+    return null;
 }
 
 function computeSelectionInfo() {
@@ -228,7 +220,7 @@ function getSelectionInfoWithFallback() {
     return null;
 }
 
-/* ---------------- Top-frame UI (lazy) ---------------- */
+/* ---------------- Top-frame UI ---------------- */
 
 function ensurePanel() {
     if (!isTopFrame()) return null;
@@ -329,7 +321,7 @@ async function renderPanel() {
         });
 }
 
-/* ---------------- Pin / Jump (any frame) ---------------- */
+/* ---------------- Pin / Jump ---------------- */
 
 async function addPinFromSelectionInThisFrame() {
     const info = getSelectionInfoWithFallback();
@@ -396,7 +388,6 @@ function jumpToTargetHere(target) {
     const before = window.scrollY;
     smoothScrollWindow(target.top);
 
-    // If window doesn't move, fallback to nearest scroll container from body (ancestor-only fast)
     setTimeout(() => {
         const moved = Math.abs(window.scrollY - before) > 2;
         if (moved) return;
@@ -408,13 +399,12 @@ function jumpToTargetHere(target) {
     return true;
 }
 
-/* ---------------- Selection caching (reliable + light) ---------------- */
+/* ---------------- Selection caching ---------------- */
 
-// Don't do heavy work repeatedly; cache only on key moments.
 document.addEventListener(
     "mousedown",
     (e) => {
-        if (e.button === 2) cacheSelectionIfAny(); // right button
+        if (e.button === 2) cacheSelectionIfAny();
     },
     true
 );
@@ -427,7 +417,6 @@ document.addEventListener(
     true
 );
 
-// Keep a minimal cache on selectionchange, but throttle via rAF
 let selRAF = 0;
 document.addEventListener("selectionchange", () => {
     if (selRAF) return;
