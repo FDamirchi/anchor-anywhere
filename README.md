@@ -38,7 +38,7 @@ Anchor Anywhere is a lightweight Chrome extension that lets you select text, pin
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/your-username/anchor-anywhere.git
+   git clone https://github.com/FDamirchi/anchor-anywhere.git
    ```
 
 2. Open Chrome and go to:
